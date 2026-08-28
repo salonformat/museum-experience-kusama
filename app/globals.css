@@ -19,15 +19,14 @@ h1 span { display:block; }
 h1 span:nth-child(2) { color:var(--blue); margin-left:9vw; font-style:italic; }
 h1 span:nth-child(3) { color:var(--red); margin-left:1vw; font-size:.72em; }
 .intro { max-width:410px; margin:4.2vh 0 0 1vw; font-family:Georgia,'Times New Roman',serif; font-size:clamp(15px,1.1vw,20px); line-height:1.35; }
-.enter { margin:3vh 0 0 1vw; padding:0 0 7px; border:0; border-bottom:2px solid; background:transparent; font-size:11px; font-weight:700; letter-spacing:.15em; cursor:pointer; }
-.enter b { display:inline-block; margin-left:14px; font-size:19px; transition:transform .2s; }
+.enter { margin:3vh 0 0 1vw; padding:0 0 8px; border:0; border-bottom:3px solid; background:transparent; font:italic 400 clamp(32px,4vw,62px)/1 Georgia,'Times New Roman',serif; letter-spacing:-.04em; cursor:pointer; }
+.enter b { display:inline-block; margin-left:18px; font:400 clamp(25px,3vw,45px)/1 Arial,sans-serif; transition:transform .2s; }
 .enter:hover b { transform:translate(5px,5px); }
-.artist-note { position:absolute; z-index:1; right:4vw; bottom:10vh; width:min(34vw,520px); aspect-ratio:1; display:flex; flex-direction:column; justify-content:center; padding:5vw; border-radius:50%; background:var(--yellow); transform:rotate(4deg); }
-.artist-note::before { content:''; position:absolute; inset:10%; border:2px solid var(--ink); border-radius:47% 53% 42% 58%; transform:rotate(-8deg); }
-.artist-note span,.artist-note strong { position:relative; display:block; font-family:Georgia,'Times New Roman',serif; font-weight:400; font-size:clamp(42px,6vw,90px); line-height:.72; letter-spacing:-.08em; }
-.artist-note strong { color:var(--red); margin-left:2vw; font-style:italic; }
-.artist-note small { position:relative; margin:24px 0 0 4vw; font-size:10px; font-weight:800; letter-spacing:.18em; }
-.artist-note i { position:absolute; right:-5%; top:7%; color:var(--blue); font-family:'Comic Sans MS','Bradley Hand',cursive; font-size:clamp(18px,2vw,30px); line-height:.9; transform:rotate(8deg); }
+.portrait { position:absolute; z-index:1; right:-1vw; bottom:1vh; width:min(46vw,690px); margin:0; opacity:.8; transform:rotate(1.5deg); }
+.portrait img { display:block; width:100%; aspect-ratio:.83; object-fit:cover; object-position:center 25%; clip-path:polygon(7% 0,93% 2%,100% 92%,13% 100%,0 22%); filter:saturate(1.08) contrast(1.03); }
+.portrait figcaption { position:absolute; right:1%; top:34%; padding:11px 14px; background:var(--yellow); font-size:12px; font-weight:800; line-height:1.1; letter-spacing:.1em; transform:rotate(4deg); }
+.portrait figcaption span { font-weight:400; }
+.portrait i { position:absolute; left:-5%; top:8%; color:var(--blue); font-family:'Comic Sans MS','Bradley Hand',cursive; font-size:clamp(18px,2vw,32px); line-height:.9; transform:rotate(-10deg); }
 .seed,.made-dot { position:absolute; z-index:1; border-radius:50%; pointer-events:none; mix-blend-mode:multiply; }
 .seed { animation:drift 6s ease-in-out infinite alternate; }
 .seed-b { width:13px; height:13px; left:89%; top:12%; background:var(--blue); animation-delay:-2s; }
@@ -66,9 +65,8 @@ footer>button { padding:0; border:0; border-bottom:1px solid; background:transpa
   .hero { display:block; min-height:calc(100svh - 80px); padding:10vh 18px 90px; }
   h1 { font-size:clamp(62px,20vw,110px); line-height:.72; } h1 span:nth-child(2) { margin-left:15vw; }
   .intro { max-width:70%; margin-top:4vh; }
-  .artist-note { width:62vw; right:-24vw; bottom:10vh; opacity:.72; padding:8vw; }
-  .artist-note span,.artist-note strong { font-size:48px; }
-  .artist-note i { display:none; }
+  .portrait { width:74vw; right:-23vw; bottom:7vh; opacity:.56; }
+  .portrait i,.portrait figcaption { display:none; }
   footer { left:18px; right:18px; grid-template-columns:1fr auto; } footer p:last-child { display:none; }
   .first-dot { right:9vw; top:17vh; }
   .drawing-instruction p { font-size:58px; }

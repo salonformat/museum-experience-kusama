@@ -8,7 +8,7 @@ export default function Home() {
   const [dots, setDots] = useState<Array<{ id: number; x: number; y: number; nx: number; ny: number; size: number; color: string }>>([]);
   const [stage, setStage] = useState<'intro' | 'draw'>('intro');
   const [posterOpen, setPosterOpen] = useState(false);
-  const [thought, setThought] = useState('Repetition changed the way I saw the space.');
+  const [thought, setThought] = useState('I only meant to place one.');
 
   function addDot(event: React.PointerEvent<HTMLElement>) {
     if (stage !== 'draw' || posterOpen) return;
@@ -95,26 +95,25 @@ export default function Home() {
 
       {stage === 'intro' ? <section className="hero" aria-labelledby="title">
         <div className="copy">
-          <p className="eyebrow">ONE DOT. THEN ANOTHER.</p>
+          <p className="eyebrow">A SMALL INTERACTIVE HOMAGE TO YAYOI KUSAMA</p>
           <h1 id="title"><span>INTO</span><span>THE</span><span>INFINITE</span></h1>
-          <p className="intro">A small digital experiment about repetition, scale and the moment a pattern begins to exceed its surface.</p>
-          <button className="enter" type="button" onPointerDown={(e) => { e.stopPropagation(); setStage('draw'); }}>PLACE THE FIRST DOT <b>↘</b></button>
+          <p className="intro">Make your own field of dots. At the end, choose a line and download the whole thing as your poster.</p>
+          <button className="enter" type="button" onPointerDown={(e) => { e.stopPropagation(); setStage('draw'); }}>START <b>↘</b></button>
         </div>
 
-        <div className="artist-note" aria-label="Yayoi Kusama, 1929 bis 2026">
-          <span>YAYOI</span>
-          <strong>KUSAMA</strong>
-          <small>1929—2026</small>
+        <figure className="portrait">
+          <img src="/kusama-faceless-illustration.png" alt="Abstrakte gesichtslose Collage als Hommage an Yayoi Kusama" />
+          <figcaption>YAYOI KUSAMA<br /><span>1929—2026</span></figcaption>
           <i>repetition<br />changes space</i>
-        </div>
+        </figure>
       </section> : <section className="drawing-field" aria-label="Persönliche Zeichenfläche">
-        {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Place one dot.<br />Then another.</p><small>Tap anywhere on the white field.</small></div>}
-        {dots.length > 0 && dots.length < 5 && <p className="drawing-whisper">Keep going — notice when the single mark becomes a pattern.</p>}
+        {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Start with a dot.<br />Then keep going.</p><small>Tap anywhere. Your dots become a poster.</small></div>}
+        {dots.length > 0 && dots.length < 5 && <p className="drawing-whisper">Enough to feel like a pattern yet?</p>}
         {dots.length >= 5 && <button className="finish" type="button" onPointerDown={(e) => { e.stopPropagation(); setPosterOpen(true); }}>FINISH MY STUDY <b>↗</b></button>}
       </section>}
 
       <footer>
-        <p>{stage === 'intro' ? 'AN INTERACTIVE STUDY OF REPETITION AND SCALE.' : 'TAP THE FIELD TO LET THE PATTERN GROW.'}</p>
+        <p>{stage === 'intro' ? 'MAKE A FIELD OF DOTS. KEEP IT AS A POSTER.' : 'TAP THE FIELD TO LET THE PATTERN GROW.'}</p>
         <p>{stage === 'intro' ? '1929—2026' : `${String(dots.length).padStart(2, '0')} DOTS`}</p>
         <p>{stage === 'intro' ? 'AN INDEPENDENT CONCEPT PROTOTYPE' : 'YOUR GESTURE BECOMES THE WORK'}</p>
       </footer>
@@ -129,12 +128,12 @@ export default function Home() {
           <div className="poster-copy">
             <p className="step">YOUR PATTERN / YOUR THOUGHT</p>
             <h2 id="poster-title">Keep a trace<br />of what changed.</h2>
-            <p>Choose the sentence that feels closest to your experience. It becomes part of your personal poster.</p>
+            <p>Pick the line that fits. It will appear on your poster.</p>
             <div className="thoughts">
               {[
-                'Repetition changed the way I saw the space.',
-                'One small mark became something larger than me.',
-                'The pattern ended at the screen. In my mind, it continued.',
+                'I got bored and wanted it to end.',
+                'I only meant to place one.',
+                'I could have kept going forever.',
               ].map((option) => <button className={thought === option ? 'selected' : ''} key={option} type="button" onClick={() => setThought(option)}>{option}</button>)}
             </div>
             <button className="download" type="button" onClick={downloadPoster}>DOWNLOAD MY INFINITY STUDY ↓</button>
