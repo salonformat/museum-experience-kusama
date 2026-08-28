@@ -5,14 +5,80 @@ import { useState } from 'react';
 const colors = ['#ed1c24', '#1747d1', '#ffd21f'];
 
 export default function Home() {
-  const [dots, setDots] = useState<Array<{ id: number; x: number; y: number; size: number; color: string }>>([]);
+  const [dots, setDots] = useState<Array<{ id: number; x: number; y: number; nx: number; ny: number; size: number; color: string }>>([]);
   const [started, setStarted] = useState(false);
+  const [posterOpen, setPosterOpen] = useState(false);
+  const [thought, setThought] = useState('Repetition changed the way I saw the space.');
 
   function addDot(event: React.PointerEvent<HTMLElement>) {
     const box = event.currentTarget.getBoundingClientRect();
     const id = Date.now() + dots.length;
     setStarted(true);
-    setDots((all) => [...all, { id, x: event.clientX - box.left, y: event.clientY - box.top, size: 22 + (id % 48), color: colors[id % 3] }]);
+    const x = event.clientX - box.left;
+    const y = event.clientY - box.top;
+    setDots((all) => [...all, { id, x, y, nx: x / box.width, ny: y / box.height, size: 22 + (id % 48), color: colors[id % 3] }]);
+  }
+
+  function downloadPoster() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1350;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.fillStyle = '#f7f2e9';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    dots.forEach((dot, index) => {
+      const x = dot.nx * canvas.width;
+      const y = dot.ny * 1010;
+      const radius = Math.max(12, dot.size * 1.35);
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = dot.color;
+      ctx.globalAlpha = 0.9;
+      ctx.fill();
+      if (index % 3 === 0) {
+        ctx.strokeStyle = '#11100d';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+    });
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#11100d';
+    ctx.font = '800 26px Arial';
+    ctx.fillText('SALON FORMAT / EXPERIMENT 01', 70, 70);
+    ctx.font = 'italic 126px Georgia';
+    ctx.fillStyle = '#1747d1';
+    ctx.fillText('INTO THE', 68, 1040);
+    ctx.font = '112px Georgia';
+    ctx.fillStyle = '#ed1c24';
+    ctx.fillText('INFINITE', 68, 1145);
+    ctx.fillStyle = '#11100d';
+    ctx.font = '30px Georgia';
+    wrapText(ctx, `“${thought}”`, 70, 1215, 840, 39);
+    ctx.font = '700 22px Arial';
+    ctx.fillText(`${dots.length} DOTS · MY INFINITY STUDY`, 70, 1310);
+    ctx.font = '18px Arial';
+    ctx.fillText('Independent concept prototype · AI-assisted original illustration', 565, 1310);
+
+    const link = document.createElement('a');
+    link.download = 'my-infinity-study-salon-format.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
+    const words = text.split(' ');
+    let line = '';
+    words.forEach((word) => {
+      const test = `${line}${word} `;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        ctx.fillText(line, x, y);
+        line = `${word} `;
+        y += lineHeight;
+      } else line = test;
+    });
+    ctx.fillText(line, x, y);
   }
 
   return (
@@ -42,8 +108,37 @@ export default function Home() {
         </figure>
       </section>
 
-      <footer><p>CLICK ANYWHERE TO LET THE PATTERN GROW.</p><p>{String(dots.length).padStart(2, '0')} DOTS</p><p>AN INTERACTIVE CONCEPT PROTOTYPE</p></footer>
+      <footer>
+        <p>{dots.length < 5 ? 'TAP ANYWHERE TO LET THE PATTERN GROW.' : 'YOUR PATTERN IS READY TO KEEP.'}</p>
+        <p>{String(dots.length).padStart(2, '0')} DOTS</p>
+        {dots.length >= 5 ? <button type="button" onPointerDown={(e) => { e.stopPropagation(); setPosterOpen(true); }}>MAKE MY POSTER ↗</button> : <p>AN INTERACTIVE CONCEPT PROTOTYPE</p>}
+      </footer>
       {!started && <div className="first-dot"><span /></div>}
+
+      {posterOpen && (
+        <section className="poster-panel" aria-modal="true" role="dialog" aria-labelledby="poster-title" onPointerDown={(e) => e.stopPropagation()}>
+          <button className="close" type="button" aria-label="Poster schließen" onClick={() => setPosterOpen(false)}>×</button>
+          <div className="poster-preview" aria-hidden="true">
+            <div>{dots.map((dot) => <span key={dot.id} style={{ background: dot.color, width: `${Math.max(10, dot.size * .55)}px`, height: `${Math.max(10, dot.size * .55)}px`, left: `${dot.nx * 100}%`, top: `${dot.ny * 78}%` }} />)}</div>
+            <b>INTO THE<br /><em>INFINITE</em></b>
+            <small>{dots.length} DOTS · MY INFINITY STUDY</small>
+          </div>
+          <div className="poster-copy">
+            <p className="step">YOUR PATTERN / YOUR THOUGHT</p>
+            <h2 id="poster-title">Keep a trace<br />of what changed.</h2>
+            <p>Choose the sentence that feels closest to your experience. It becomes part of your personal poster.</p>
+            <div className="thoughts">
+              {[
+                'Repetition changed the way I saw the space.',
+                'One small mark became something larger than me.',
+                'The pattern ended at the screen. In my mind, it continued.',
+              ].map((option) => <button className={thought === option ? 'selected' : ''} key={option} type="button" onClick={() => setThought(option)}>{option}</button>)}
+            </div>
+            <button className="download" type="button" onClick={downloadPoster}>DOWNLOAD MY INFINITY STUDY ↓</button>
+            <small>PNG · made from the dots you placed · ready to keep or share</small>
+          </div>
+        </section>
+      )}
     </main>
   );
 }
