@@ -88,7 +88,7 @@ export default function Home() {
       {stage === 'draw' && dots.map((dot) => <span className="made-dot" aria-hidden="true" key={dot.id} style={{ left: dot.x, top: dot.y, width: dot.size, height: dot.size, background: dot.color }} />)}
 
       <header>
-        <a className="salon" href="#" onPointerDown={(e) => e.stopPropagation()}>SALON<br />FORMAT</a>
+        <a className="salon" href="#" aria-label="Salon Format" onPointerDown={(e) => e.stopPropagation()}><img src="/sf-mark.png" alt="" /></a>
         <p>{stage === 'intro' ? <>EXPERIMENT 01<br />REPETITION</> : <>MY INFINITY STUDY<br />{String(dots.length).padStart(2, '0')} DOTS</>}</p>
         {stage === 'intro' ? <button type="button" aria-label="Sound einschalten" onPointerDown={(e) => e.stopPropagation()}>SOUND&nbsp;&nbsp;○</button> : <button type="button" onPointerDown={(e) => { e.stopPropagation(); setDots([]); }}>CLEAR&nbsp;&nbsp;×</button>}
       </header>
