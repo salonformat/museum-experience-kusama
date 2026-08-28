@@ -19,8 +19,8 @@ h1 span { display:block; }
 h1 span:nth-child(2) { color:var(--blue); margin-left:9vw; font-style:italic; }
 h1 span:nth-child(3) { color:var(--red); margin-left:1vw; font-size:.72em; }
 .intro { max-width:410px; margin:4.2vh 0 0 1vw; font-family:Georgia,'Times New Roman',serif; font-size:clamp(15px,1.1vw,20px); line-height:1.35; }
-.enter { margin:5vh 0 0 1vw; padding:18px 28px 22px; border:2px solid var(--ink); background:var(--yellow); font:italic 400 clamp(62px,7.5vw,128px)/.82 Georgia,'Times New Roman',serif; letter-spacing:-.065em; cursor:pointer; box-shadow:12px 12px 0 var(--red); transform:rotate(-1deg); transition:transform .2s,box-shadow .2s; }
-.enter b { display:inline-block; margin-left:24px; font:400 clamp(40px,5vw,76px)/1 Arial,sans-serif; transition:transform .2s; }
+.enter { margin:5vh 0 0 1vw; padding:16px 26px 20px; border:2px solid var(--ink); background:var(--yellow); font:italic 400 clamp(57px,6.9vw,116px)/.82 Georgia,'Times New Roman',serif; letter-spacing:-.065em; cursor:pointer; box-shadow:12px 12px 0 var(--red); transform:rotate(-1deg); transition:transform .2s,box-shadow .2s; }
+.enter b { display:inline-block; margin-left:22px; font:400 clamp(36px,4.6vw,68px)/1 Arial,sans-serif; transition:transform .2s; }
 .enter:hover { transform:rotate(0deg) translate(4px,4px); box-shadow:8px 8px 0 var(--red); }
 .enter:hover b { transform:translate(5px,5px); }
 .portrait { position:absolute; z-index:1; right:-1vw; bottom:1vh; width:min(46vw,690px); margin:0; opacity:.8; transform:rotate(1.5deg); }
