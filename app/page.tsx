@@ -84,7 +84,7 @@ export default function Home() {
   return (
     <main className={`experience ${stage === 'draw' ? 'drawing' : ''}`} onPointerDown={addDot}>
       <div className="grain" aria-hidden="true" />
-      {stage === 'intro' && <><span className="seed seed-a" /><span className="seed seed-b" /><span className="seed seed-c" /></>}
+      {stage === 'intro' && <><span className="seed seed-b" /><span className="seed seed-c" /></>}
       {stage === 'draw' && dots.map((dot) => <span className="made-dot" aria-hidden="true" key={dot.id} style={{ left: dot.x, top: dot.y, width: dot.size, height: dot.size, background: dot.color }} />)}
 
       <header>
@@ -101,11 +101,12 @@ export default function Home() {
           <button className="enter" type="button" onPointerDown={(e) => { e.stopPropagation(); setStage('draw'); }}>PLACE THE FIRST DOT <b>↘</b></button>
         </div>
 
-        <figure className="portrait">
-          <img src="/kusama-editorial-portrait.png" alt="Eigenständige abstrakte redaktionelle Porträtillustration" />
-          <figcaption>YAYOI KUSAMA<br /><span>1929—2026</span></figcaption>
+        <div className="artist-note" aria-label="Yayoi Kusama, 1929 bis 2026">
+          <span>YAYOI</span>
+          <strong>KUSAMA</strong>
+          <small>1929—2026</small>
           <i>repetition<br />changes space</i>
-        </figure>
+        </div>
       </section> : <section className="drawing-field" aria-label="Persönliche Zeichenfläche">
         {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Place one dot.<br />Then another.</p><small>Tap anywhere on the white field.</small></div>}
         {dots.length > 0 && dots.length < 5 && <p className="drawing-whisper">Keep going — notice when the single mark becomes a pattern.</p>}
@@ -117,8 +118,6 @@ export default function Home() {
         <p>{stage === 'intro' ? '1929—2026' : `${String(dots.length).padStart(2, '0')} DOTS`}</p>
         <p>{stage === 'intro' ? 'AN INDEPENDENT CONCEPT PROTOTYPE' : 'YOUR GESTURE BECOMES THE WORK'}</p>
       </footer>
-      {stage === 'intro' && <div className="first-dot"><span /></div>}
-
       {posterOpen && (
         <section className="poster-panel" aria-modal="true" role="dialog" aria-labelledby="poster-title" onPointerDown={(e) => e.stopPropagation()}>
           <button className="close" type="button" aria-label="Poster schließen" onClick={() => setPosterOpen(false)}>×</button>
