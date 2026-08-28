@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const colors = ['#ed1c24', '#1747d1', '#ffd21f'];
 
@@ -9,6 +9,43 @@ export default function Home() {
   const [stage, setStage] = useState<'intro' | 'draw'>('intro');
   const [posterOpen, setPosterOpen] = useState(false);
   const [thought, setThought] = useState('I only meant to place one.');
+  const [soundOn, setSoundOn] = useState(true);
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  function playDotSound(colorIndex: number, dotIndex: number) {
+    if (!soundOn) return;
+
+    const AudioContextClass = window.AudioContext;
+    const context = audioContextRef.current ?? new AudioContextClass();
+    audioContextRef.current = context;
+    if (context.state === 'suspended') void context.resume();
+
+    const now = context.currentTime;
+    const baseNotes = [261.63, 329.63, 392];
+    const frequency = baseNotes[colorIndex] * (1 + Math.min(dotIndex, 24) * 0.012);
+    const oscillator = context.createOscillator();
+    const overtone = context.createOscillator();
+    const gain = context.createGain();
+    const overtoneGain = context.createGain();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(frequency, now);
+    overtone.type = 'triangle';
+    overtone.frequency.setValueAtTime(frequency * 2, now);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.13, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+    overtoneGain.gain.setValueAtTime(0.0001, now);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.025, now + 0.008);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+
+    oscillator.connect(gain).connect(context.destination);
+    overtone.connect(overtoneGain).connect(context.destination);
+    oscillator.start(now);
+    overtone.start(now);
+    oscillator.stop(now + 0.25);
+    overtone.stop(now + 0.16);
+  }
 
   function addDot(event: React.PointerEvent<HTMLElement>) {
     if (stage !== 'draw' || posterOpen) return;
@@ -16,7 +53,9 @@ export default function Home() {
     const id = Date.now() + dots.length;
     const x = event.clientX - box.left;
     const y = event.clientY - box.top;
-    setDots((all) => [...all, { id, x, y, nx: x / box.width, ny: y / box.height, size: 22 + (id % 48), color: colors[id % 3] }]);
+    const colorIndex = dots.length % colors.length;
+    playDotSound(colorIndex, dots.length);
+    setDots((all) => [...all, { id, x, y, nx: x / box.width, ny: y / box.height, size: 22 + (id % 48), color: colors[colorIndex] }]);
   }
 
   function downloadPoster() {
@@ -90,7 +129,10 @@ export default function Home() {
       <header>
         <a className="salon" href="#" aria-label="Salon Format" onPointerDown={(e) => e.stopPropagation()}><img src="/sf-mark.png" alt="" /></a>
         <p>{stage === 'intro' ? <>EXPERIMENT 01<br />REPETITION</> : <>MY INFINITY STUDY<br />{String(dots.length).padStart(2, '0')} DOTS</>}</p>
-        {stage === 'intro' ? <button type="button" aria-label="Sound einschalten" onPointerDown={(e) => e.stopPropagation()}>SOUND&nbsp;&nbsp;○</button> : <button type="button" onPointerDown={(e) => { e.stopPropagation(); setDots([]); }}>CLEAR&nbsp;&nbsp;×</button>}
+        <div className="header-actions" onPointerDown={(e) => e.stopPropagation()}>
+          <button type="button" aria-label={soundOn ? 'Sound ausschalten' : 'Sound einschalten'} aria-pressed={soundOn} onClick={() => setSoundOn((value) => !value)}>SOUND&nbsp;&nbsp;{soundOn ? '●' : '○'}</button>
+          {stage === 'draw' && <button type="button" onClick={() => setDots([])}>CLEAR&nbsp;&nbsp;×</button>}
+        </div>
       </header>
 
       {stage === 'intro' ? <section className="hero" aria-labelledby="title">
@@ -104,7 +146,6 @@ export default function Home() {
         <figure className="portrait">
           <img src="/kusama-faceless-illustration.png" alt="Abstrakte gesichtslose Collage als Hommage an Yayoi Kusama" />
           <figcaption>YAYOI KUSAMA<br /><span>1929—2026</span></figcaption>
-          <i>repetition<br />changes space</i>
         </figure>
       </section> : <section className="drawing-field" aria-label="Persönliche Zeichenfläche">
         {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Your turn.</p><small>Tap the blank space. Add as many dots as you like.</small></div>}
