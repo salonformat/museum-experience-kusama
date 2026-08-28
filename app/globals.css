@@ -19,8 +19,8 @@ h1 span { display:block; }
 h1 span:nth-child(2) { color:var(--blue); margin-left:9vw; font-style:italic; }
 h1 span:nth-child(3) { color:var(--red); margin-left:1vw; font-size:.72em; }
 .intro { max-width:410px; margin:4.2vh 0 0 1vw; font-family:Georgia,'Times New Roman',serif; font-size:clamp(15px,1.1vw,20px); line-height:1.35; }
-.enter { margin:3vh 0 0 1vw; padding:0 0 8px; border:0; border-bottom:3px solid; background:transparent; font:italic 400 clamp(32px,4vw,62px)/1 Georgia,'Times New Roman',serif; letter-spacing:-.04em; cursor:pointer; }
-.enter b { display:inline-block; margin-left:18px; font:400 clamp(25px,3vw,45px)/1 Arial,sans-serif; transition:transform .2s; }
+.enter { margin:5vh 0 0 1vw; padding:0 0 10px; border:0; border-bottom:5px solid; background:transparent; font:italic 400 clamp(62px,7.5vw,128px)/.82 Georgia,'Times New Roman',serif; letter-spacing:-.065em; cursor:pointer; }
+.enter b { display:inline-block; margin-left:24px; font:400 clamp(40px,5vw,76px)/1 Arial,sans-serif; transition:transform .2s; }
 .enter:hover b { transform:translate(5px,5px); }
 .portrait { position:absolute; z-index:1; right:-1vw; bottom:1vh; width:min(46vw,690px); margin:0; opacity:.8; transform:rotate(1.5deg); }
 .portrait img { display:block; width:100%; aspect-ratio:.83; object-fit:cover; object-position:center 25%; clip-path:polygon(7% 0,93% 2%,100% 92%,13% 100%,0 22%); filter:saturate(1.08) contrast(1.03); }

@@ -107,7 +107,7 @@ export default function Home() {
           <i>repetition<br />changes space</i>
         </figure>
       </section> : <section className="drawing-field" aria-label="Persönliche Zeichenfläche">
-        {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Start with a dot.<br />Then keep going.</p><small>Tap anywhere. Your dots become a poster.</small></div>}
+        {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Your turn.</p><small>Tap the blank space. Add as many dots as you like.</small></div>}
         {dots.length > 0 && dots.length < 5 && <p className="drawing-whisper">Enough to feel like a pattern yet?</p>}
         {dots.length >= 5 && <button className="finish" type="button" onPointerDown={(e) => { e.stopPropagation(); setPosterOpen(true); }}>FINISH MY STUDY <b>↗</b></button>}
       </section>}
