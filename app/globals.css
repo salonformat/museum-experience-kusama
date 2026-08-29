@@ -72,7 +72,7 @@ footer>button { padding:0; border:0; border-bottom:1px solid; background:transpa
   h1 { font-size:clamp(58px,18vw,92px); line-height:.72; } h1 span:nth-child(2) { margin-left:15vw; }
   .intro { max-width:78%; margin-top:22px; font-size:14px; }
   .enter { position:relative; z-index:5; margin-top:26px; padding:12px 20px 15px; font-size:clamp(46px,14vw,62px); box-shadow:8px 8px 0 var(--red); }
-  .enter b { margin-left:14px; font-size:32px; }
+  .enter b { display:none; }
   .project-note { max-width:72%; margin-top:25px; font-size:7px; }
   .abstract-field { width:auto; height:58vh; right:-6vw; top:11vh; bottom:auto; opacity:1; transform:rotate(1deg); }
   .abstract-field figcaption { display:none; }
