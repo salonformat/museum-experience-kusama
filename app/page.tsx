@@ -137,7 +137,7 @@ export default function Home() {
 
       {stage === 'intro' ? <section className="hero" aria-labelledby="title">
         <div className="copy">
-          <p className="eyebrow">A SMALL INTERACTIVE HOMAGE TO YAYOI KUSAMA</p>
+          <p className="eyebrow">AN INDEPENDENT EDUCATIONAL STUDY OF REPETITION, SCALE AND INFINITY — IN TRIBUTE TO YAYOI KUSAMA</p>
           <h1 id="title"><span>INTO</span><span>THE</span><span>INFINITE</span></h1>
           <p className="intro">Make your own field of dots. At the end, choose a line and download the whole thing as your poster.</p>
           <button className="enter" type="button" onPointerDown={(e) => { e.stopPropagation(); setStage('draw'); }}>START <b>↘</b></button>
