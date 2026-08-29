@@ -98,7 +98,7 @@ export default function Home() {
     ctx.font = '700 22px Arial';
     ctx.fillText(`${dots.length} DOTS · MY INFINITY STUDY`, 70, 1310);
     ctx.font = '18px Arial';
-    ctx.fillText('Independent concept prototype · AI-assisted original illustration', 565, 1310);
+    ctx.fillText('INDEPENDENT CONCEPT PROJECT · 2026', 650, 1310);
 
     const link = document.createElement('a');
     link.download = 'my-infinity-study-salon-format.png';
@@ -141,11 +141,12 @@ export default function Home() {
           <h1 id="title"><span>INTO</span><span>THE</span><span>INFINITE</span></h1>
           <p className="intro">Make your own field of dots. At the end, choose a line and download the whole thing as your poster.</p>
           <button className="enter" type="button" onPointerDown={(e) => { e.stopPropagation(); setStage('draw'); }}>START <b>↘</b></button>
+          <p className="project-note">Independent educational concept project by SALON FORMAT. Created as a tribute to Yayoi Kusama and an exploration of repetition, scale and infinity. This project is not affiliated with or commissioned by Yayoi Kusama Inc., the Yayoi Kusama Foundation or the Yayoi Kusama Museum.</p>
         </div>
 
-        <figure className="portrait">
-          <img src="./kusama-faceless-illustration.png" alt="Abstrakte gesichtslose Collage als Hommage an Yayoi Kusama" />
-          <figcaption>YAYOI KUSAMA<br /><span>1929—2026</span></figcaption>
+        <figure className="abstract-field" aria-label="Abstrakte Komposition aus Papierflächen und Kreisen">
+          <img src="./abstract-pastel-study.png" alt="Abstrakte Komposition aus pastellkreidigen Papierflächen und Kreisen" />
+          <figcaption><strong>YAYOI KUSAMA</strong><span>1929—2026</span><small>MATSUMOTO → NEW YORK → TOKYO</small></figcaption>
         </figure>
       </section> : <section className="drawing-field" aria-label="Persönliche Zeichenfläche">
         {dots.length === 0 && <div className="drawing-instruction"><span>01</span><p>Your turn.</p><small>Tap the blank space. Add as many dots as you like.</small></div>}
@@ -156,7 +157,7 @@ export default function Home() {
       <footer>
         <p>{stage === 'intro' ? 'MAKE A FIELD OF DOTS. KEEP IT AS A POSTER.' : 'TAP THE FIELD TO LET THE PATTERN GROW.'}</p>
         <p>{stage === 'intro' ? '1929—2026' : `${String(dots.length).padStart(2, '0')} DOTS`}</p>
-        <p>{stage === 'intro' ? 'AN INDEPENDENT CONCEPT PROTOTYPE' : 'YOUR GESTURE BECOMES THE WORK'}</p>
+        <p>{stage === 'intro' ? 'AN INDEPENDENT EDUCATIONAL CONCEPT PROJECT' : 'EACH TAP ADDS TO THE PATTERN.'}</p>
       </footer>
       {posterOpen && (
         <section className="poster-panel" aria-modal="true" role="dialog" aria-labelledby="poster-title" onPointerDown={(e) => e.stopPropagation()}>
