@@ -127,7 +127,7 @@ export default function Home() {
       {stage === 'draw' && dots.map((dot) => <span className="made-dot" aria-hidden="true" key={dot.id} style={{ left: dot.x, top: dot.y, width: dot.size, height: dot.size, background: dot.color }} />)}
 
       <header>
-        <a className="salon" href="#" aria-label="Salon Format" onPointerDown={(e) => e.stopPropagation()}><img src="/sf-mark.png" alt="" /></a>
+        <a className="salon" href="#" aria-label="Salon Format" onPointerDown={(e) => e.stopPropagation()}><img src="./sf-mark.png" alt="" /></a>
         <p>{stage === 'intro' ? <>EXPERIMENT 01<br />REPETITION</> : <>MY INFINITY STUDY<br />{String(dots.length).padStart(2, '0')} DOTS</>}</p>
         <div className="header-actions" onPointerDown={(e) => e.stopPropagation()}>
           <button type="button" aria-label={soundOn ? 'Sound ausschalten' : 'Sound einschalten'} aria-pressed={soundOn} onClick={() => setSoundOn((value) => !value)}>SOUND&nbsp;&nbsp;{soundOn ? '●' : '○'}</button>
@@ -144,7 +144,7 @@ export default function Home() {
         </div>
 
         <figure className="portrait">
-          <img src="/kusama-faceless-illustration.png" alt="Abstrakte gesichtslose Collage als Hommage an Yayoi Kusama" />
+          <img src="./kusama-faceless-illustration.png" alt="Abstrakte gesichtslose Collage als Hommage an Yayoi Kusama" />
           <figcaption>YAYOI KUSAMA<br /><span>1929—2026</span></figcaption>
         </figure>
       </section> : <section className="drawing-field" aria-label="Persönliche Zeichenfläche">
