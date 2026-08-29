@@ -58,7 +58,7 @@ export default function Home() {
     setDots((all) => [...all, { id, x, y, nx: x / box.width, ny: y / box.height, size: 22 + (id % 48), color: colors[colorIndex] }]);
   }
 
-  function downloadPoster() {
+  async function downloadPoster() {
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
     canvas.height = 1350;
@@ -100,10 +100,35 @@ export default function Home() {
     ctx.font = '18px Arial';
     ctx.fillText('INDEPENDENT CONCEPT PROJECT · 2026', 650, 1310);
 
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) return;
+
+    const filename = 'my-infinity-study-salon-format.png';
+    const file = new File([blob], filename, { type: 'image/png' });
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    const canShareFile = typeof navigator.share === 'function' && (!navigator.canShare || navigator.canShare({ files: [file] }));
+
+    if (isMobile && canShareFile) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'My Infinity Study',
+          text: 'My personal dot study from the Salon Format experience.',
+        });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+      }
+    }
+
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.download = 'my-infinity-study-salon-format.png';
-    link.href = canvas.toDataURL('image/png');
+    link.download = filename;
+    link.href = url;
+    document.body.appendChild(link);
     link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
   }
 
   function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
@@ -178,8 +203,8 @@ export default function Home() {
                 'I could have kept going forever.',
               ].map((option) => <button className={thought === option ? 'selected' : ''} key={option} type="button" onClick={() => setThought(option)}>{option}</button>)}
             </div>
-            <button className="download" type="button" onClick={downloadPoster}>DOWNLOAD MY INFINITY STUDY ↓</button>
-            <small>PNG · made from the dots you placed · ready to keep or share</small>
+            <button className="download" type="button" onClick={downloadPoster}>SAVE / SHARE MY INFINITY STUDY ↓</button>
+            <small>PNG · on mobile, choose “Save Image” in the share menu</small>
           </div>
         </section>
       )}
