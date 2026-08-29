@@ -27,8 +27,8 @@ h1 span:nth-child(3) { color:var(--red); margin-left:1vw; font-size:.72em; }
 .enter b { display:inline-block; margin-left:22px; font:400 clamp(36px,4.6vw,68px)/1 Arial,sans-serif; transition:transform .2s; }
 .enter:hover { transform:rotate(0deg) translate(4px,4px); box-shadow:8px 8px 0 var(--red); }
 .enter:hover b { transform:translate(5px,5px); }
-.abstract-field { position:absolute; z-index:1; right:-2vw; bottom:4vh; width:min(48vw,720px); aspect-ratio:.92; margin:0; opacity:.92; transform:rotate(1.5deg); }
-.abstract-field>img { display:block; width:100%; height:100%; object-fit:cover; clip-path:polygon(4% 0,96% 3%,100% 94%,8% 100%,0 17%); filter:saturate(1.04) contrast(1.02); }
+.abstract-field { position:absolute; z-index:1; right:0; bottom:0; width:auto; height:min(82vh,780px); aspect-ratio:4/5; margin:0; opacity:1; transform:rotate(1deg); }
+.abstract-field>img { display:block; width:100%; height:100%; object-fit:contain; filter:saturate(1.1) contrast(1.04); }
 .abstract-field figcaption { position:absolute; z-index:3; right:5%; bottom:7%; display:grid; gap:4px; padding:14px 16px; background:var(--paper); border:1px solid var(--ink); font-size:11px; line-height:1.1; letter-spacing:.1em; transform:rotate(2deg); }
 .abstract-field figcaption span { font-family:Georgia,serif; font-size:23px; letter-spacing:-.03em; }
 .abstract-field figcaption small { font-size:7px; letter-spacing:.12em; }
@@ -74,7 +74,7 @@ footer>button { padding:0; border:0; border-bottom:1px solid; background:transpa
   .enter { position:relative; z-index:5; margin-top:26px; padding:12px 20px 15px; font-size:clamp(46px,14vw,62px); box-shadow:8px 8px 0 var(--red); }
   .enter b { margin-left:14px; font-size:32px; }
   .project-note { max-width:72%; margin-top:25px; font-size:7px; }
-  .abstract-field { width:76vw; right:-30vw; top:23vh; bottom:auto; opacity:.38; }
+  .abstract-field { width:auto; height:58vh; right:-6vw; top:11vh; bottom:auto; opacity:1; transform:rotate(1deg); }
   .abstract-field figcaption { display:none; }
   footer { left:18px; right:18px; grid-template-columns:1fr auto; } footer p:last-child { display:none; }
   .first-dot { right:9vw; top:17vh; }
