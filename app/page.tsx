@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const colors = ['#ed1c24', '#1747d1', '#ffd21f'];
 
@@ -10,7 +10,17 @@ export default function Home() {
   const [posterOpen, setPosterOpen] = useState(false);
   const [thought, setThought] = useState('I only meant to place one.');
   const [soundOn, setSoundOn] = useState(true);
+  const [posterUrl, setPosterUrl] = useState('');
+  const [saveConfirmed, setSaveConfirmed] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
+
+  useEffect(() => {
+    if (!posterOpen) {
+      setPosterUrl('');
+      return;
+    }
+    setPosterUrl(createPosterDataUrl(thought));
+  }, [posterOpen, dots, thought]);
 
   function playDotSound(colorIndex: number, dotIndex: number) {
     if (!soundOn) return;
@@ -58,12 +68,12 @@ export default function Home() {
     setDots((all) => [...all, { id, x, y, nx: x / box.width, ny: y / box.height, size: 22 + (id % 48), color: colors[colorIndex] }]);
   }
 
-  async function downloadPoster() {
+  function createPosterDataUrl(selectedThought = thought) {
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
     canvas.height = 1350;
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return '';
 
     ctx.fillStyle = '#f7f2e9';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -94,14 +104,25 @@ export default function Home() {
     ctx.fillText('INFINITE', 68, 1145);
     ctx.fillStyle = '#11100d';
     ctx.font = '30px Georgia';
-    wrapText(ctx, `“${thought}”`, 70, 1215, 840, 39);
+    wrapText(ctx, `“${selectedThought}”`, 70, 1215, 840, 39);
     ctx.font = '700 22px Arial';
     ctx.fillText(`${dots.length} DOTS · MY INFINITY STUDY`, 70, 1310);
     ctx.font = '18px Arial';
     ctx.fillText('INDEPENDENT CONCEPT PROJECT · 2026', 650, 1310);
 
-    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
-    if (!blob) return;
+    return canvas.toDataURL('image/png');
+  }
+
+  function confirmSave() {
+    if (typeof navigator.vibrate === 'function') navigator.vibrate([35, 35, 75]);
+    setSaveConfirmed(true);
+    window.setTimeout(() => setSaveConfirmed(false), 2600);
+  }
+
+  async function downloadPoster() {
+    if (!posterUrl) return;
+
+    const blob = await fetch(posterUrl).then((response) => response.blob());
 
     const filename = 'my-infinity-study-salon-format.png';
     const file = new File([blob], filename, { type: 'image/png' });
@@ -115,6 +136,7 @@ export default function Home() {
           title: 'My Infinity Study',
           text: 'My personal dot study from the Salon Format experience.',
         });
+        confirmSave();
         return;
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') return;
@@ -128,6 +150,7 @@ export default function Home() {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    confirmSave();
     window.setTimeout(() => URL.revokeObjectURL(url), 1500);
   }
 
@@ -187,10 +210,8 @@ export default function Home() {
       {posterOpen && (
         <section className="poster-panel" aria-modal="true" role="dialog" aria-labelledby="poster-title" onPointerDown={(e) => e.stopPropagation()}>
           <button className="close" type="button" aria-label="Poster schließen" onClick={() => setPosterOpen(false)}>×</button>
-          <div className="poster-preview" aria-hidden="true">
-            <div>{dots.map((dot) => <span key={dot.id} style={{ background: dot.color, width: `${Math.max(10, dot.size * .55)}px`, height: `${Math.max(10, dot.size * .55)}px`, left: `${dot.nx * 100}%`, top: `${dot.ny * 78}%` }} />)}</div>
-            <b>INTO THE<br /><em>INFINITE</em></b>
-            <small>{dots.length} DOTS · MY INFINITY STUDY</small>
+          <div className="poster-preview">
+            {posterUrl && <img src={posterUrl} alt="Vorschau des persönlichen Infinity-Study-Posters" />}
           </div>
           <div className="poster-copy">
             <p className="step">YOUR PATTERN / YOUR THOUGHT</p>
@@ -201,9 +222,9 @@ export default function Home() {
                 'I got bored and wanted it to end.',
                 'I only meant to place one.',
                 'I could have kept going forever.',
-              ].map((option) => <button className={thought === option ? 'selected' : ''} key={option} type="button" onClick={() => setThought(option)}>{option}</button>)}
+              ].map((option) => <button className={thought === option ? 'selected' : ''} key={option} type="button" onClick={() => { setThought(option); setPosterUrl(createPosterDataUrl(option)); setSaveConfirmed(false); }}>{option}</button>)}
             </div>
-            <button className="download" type="button" onClick={downloadPoster}>SAVE / SHARE MY INFINITY STUDY ↓</button>
+            <button className={`download ${saveConfirmed ? 'confirmed' : ''}`} type="button" disabled={!posterUrl} onClick={downloadPoster}>{saveConfirmed ? 'SAVED / SHARED ✓' : 'SAVE / SHARE MY INFINITY STUDY ↓'}</button>
             <small>PNG · on mobile, choose “Save Image” in the share menu</small>
           </div>
         </section>
