@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: 'github-pages',
-  base: '/museum-experience-kusama/',
+  base: '/',
   publicDir: '../public',
   css: { postcss: { plugins: [tailwindcss()] } },
   plugins: [react()],
